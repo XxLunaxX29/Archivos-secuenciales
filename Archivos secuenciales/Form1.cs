@@ -436,7 +436,7 @@ namespace Archivos_secuenciales
             }
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Archivos de texto (*.txt)|*.txt|Archivos CSV (*.csv)|*.csv|Todos los archivos (*.*)|*.*";
+            sfd.Filter = "Archivos CSV (*.csv)|*.csv|Archivos de texto (*.txt)|*.txt|Todos los archivos (*.*)|*.*";
             sfd.Title = "Guardar archivo";
 
             if (sfd.ShowDialog() == DialogResult.OK)
@@ -445,12 +445,20 @@ namespace Archivos_secuenciales
                 {
                     string ruta = sfd.FileName;
 
-                    //  Datos en la misma línea
-                    string contenido = txtNombre.Text + "," + txtCelular.Text;
+                    // Primera línea: encabezado
+                    string encabezado = "Nombre,Celular";
 
-                    File.WriteAllText(ruta, contenido);
+                    // Segunda línea: datos
+                    string datos = txtNombre.Text + "," + txtCelular.Text;
 
-                    MessageBox.Show("Archivo creado correctamente.",
+                    // Escribir ambas líneas
+                    File.WriteAllLines(ruta, new string[]
+                    {
+                encabezado,
+                datos
+                    });
+
+                    MessageBox.Show("Archivo creado correctamente con encabezados.",
                         "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     txtNombre.Clear();
@@ -611,6 +619,94 @@ namespace Archivos_secuenciales
 
             }
         }
+
+
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        { if (DgvDATAS.Rows.Count == 0)
+            {
+                MessageBox.Show("No hay datos cargados");
+                return;
+            }
+
+            string textoBuscar = txtBuscar.Text.Trim();
+
+            if (string.IsNullOrEmpty(textoBuscar))
+            {
+                MessageBox.Show("Escribe un texto para buscar");
+                return;
+            }
+
+            textoBuscar = textoBuscar.ToLower();
+
+            foreach (DataGridViewRow fila in DgvDATAS.Rows)
+            {
+                foreach (DataGridViewCell celda in fila.Cells)
+                {
+                    if (celda.Value != null &&
+                        celda.Value.ToString().ToLower().Contains(textoBuscar))
+                    {
+                        // Selecciona la fila
+                        fila.Selected = true;
+
+                        // Lleva el scroll a esa fila
+                        DgvDATAS.FirstDisplayedScrollingRowIndex = fila.Index;
+
+                        MessageBox.Show($"Texto encontrado en la fila {fila.Index + 1}");
+                        return; // termina al encontrar la primera coincidencia
+                    }
+                }
+            }
+
+            MessageBox.Show("Texto no encontrado");
+        }
+
+
+     
+
+        private void btnEliminarFila_Click(object sender, EventArgs e)
+        {
+            if (DgvDATAS.CurrentCell == null)
+            {
+                MessageBox.Show("No hay ninguna fila seleccionada.", "Información",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            int rowIndex = DgvDATAS.CurrentCell.RowIndex;
+
+            if (Datas == null || rowIndex < 0 || rowIndex >= Datas.Count)
+            {
+                MessageBox.Show("No hay datos para eliminar.", "Información",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var confirm = MessageBox.Show("¿Estás seguro de eliminar este registro?",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes)
+                return;
+
+            selectedRowIndex = -1; // muy importante
+
+            Datas.RemoveAt(rowIndex);
+
+            DgvDATAS.RowCount = Datas.Count;
+
+            if (Datas.Count > 0)
+            {
+                int newIndex = Math.Min(rowIndex, Datas.Count - 1);
+                DgvDATAS.CurrentCell = DgvDATAS.Rows[newIndex].Cells[0];
+            }
+
+            DgvDATAS.Invalidate();
+
+            MessageBox.Show("Registro eliminado.", "Listo",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
- 
+    
 }

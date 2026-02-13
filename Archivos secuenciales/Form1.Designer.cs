@@ -45,6 +45,10 @@
             DgvProperties = new DataGridView();
             btnCrearCarpeta = new Button();
             btnAgregarInfromacion = new Button();
+            btnBuscar = new Button();
+            txtBuscar = new TextBox();
+            label3 = new Label();
+            btnEliminarFila = new Button();
             ((System.ComponentModel.ISupportInitialize)DgvDATAS).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)DgvProperties).BeginInit();
@@ -209,11 +213,51 @@
             btnAgregarInfromacion.UseVisualStyleBackColor = true;
             btnAgregarInfromacion.Click += btnAgregarInfromacion_Click;
             // 
+            // btnBuscar
+            // 
+            btnBuscar.Location = new Point(511, 82);
+            btnBuscar.Name = "btnBuscar";
+            btnBuscar.Size = new Size(127, 29);
+            btnBuscar.TabIndex = 17;
+            btnBuscar.Text = "Buscar Nombre";
+            btnBuscar.UseVisualStyleBackColor = true;
+            btnBuscar.Click += btnBuscar_Click;
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.Location = new Point(87, 3);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.Size = new Size(125, 27);
+            txtBuscar.TabIndex = 18;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(17, 6);
+            label3.Name = "label3";
+            label3.Size = new Size(52, 20);
+            label3.TabIndex = 19;
+            label3.Text = "Buscar";
+            // 
+            // btnEliminarFila
+            // 
+            btnEliminarFila.Location = new Point(644, 82);
+            btnEliminarFila.Name = "btnEliminarFila";
+            btnEliminarFila.Size = new Size(127, 29);
+            btnEliminarFila.TabIndex = 20;
+            btnEliminarFila.Text = "Eliminar Info";
+            btnEliminarFila.UseVisualStyleBackColor = true;
+            btnEliminarFila.Click += btnEliminarFila_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1074, 613);
+            Controls.Add(btnEliminarFila);
+            Controls.Add(label3);
+            Controls.Add(txtBuscar);
+            Controls.Add(btnBuscar);
             Controls.Add(btnAgregarInfromacion);
             Controls.Add(btnCrearCarpeta);
             Controls.Add(DgvProperties);
@@ -259,5 +303,9 @@
         private DataGridView DgvProperties;
         private Button btnCrearCarpeta;
         private Button btnAgregarInfromacion;
+        private Button btnBuscar;
+        private TextBox txtBuscar;
+        private Label label3;
+        private Button btnEliminarFila;
     }
 }
