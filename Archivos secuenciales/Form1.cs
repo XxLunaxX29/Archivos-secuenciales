@@ -700,6 +700,5 @@ namespace Archivos_secuenciales
             MessageBox.Show("Registro eliminado.", "Listo",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-    }
-    
+    }    
 }
