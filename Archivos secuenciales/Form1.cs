@@ -269,7 +269,7 @@ namespace Archivos_secuenciales
         }
         private void Propiedades(Propiedades propiedades)
         {
-            DgvDATAS.Rows.Clear();
+            DgvProperties.Rows.Clear();   
 
             FileInfo info = new FileInfo(propiedades.Ruta);
 
@@ -281,13 +281,11 @@ namespace Archivos_secuenciales
             string tamano = (info.Length / 1024.0).ToString("F2") + " KB";
             string fechaCreacion = info.CreationTime.ToString();
             string ultimoAcceso = info.LastAccessTime.ToString();
-            string extension = info.Extension;
             DgvProperties.Rows.Add("Nombre", nombre);
             DgvProperties.Rows.Add("Tipo", tipo);
             DgvProperties.Rows.Add("Ubicación", ubicacion);
             DgvProperties.Rows.Add("Carpeta contenedora", carpeta);
             DgvProperties.Rows.Add("Tamaño", tamano);
-            DgvProperties.Rows.Add("Extensión", extension);
 
             DgvProperties.Rows.Add("Fecha de creación", fechaCreacion);
             DgvProperties.Rows.Add("Último acceso", ultimoAcceso);
@@ -295,24 +293,19 @@ namespace Archivos_secuenciales
         }
         private void btnPropiedades_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "Archivos CSV|*.csv| Archivos JSON|*.json| Archivos TXT|*.txt"; ;
-            openFileDialog1.Multiselect = true;
-
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            if (string.IsNullOrEmpty(rutaArchivoActual))
             {
-                foreach (string rutaArchivo in openFileDialog1.FileNames)
-                {
-                    // Crear objeto Cancion
-                    Propiedades propiedades = new Propiedades
-                    {
-                        Ruta = rutaArchivo,
-                    };
-
-                    // Llamar al método
-                    Propiedades(propiedades);
-                }
+                MessageBox.Show("No hay ningún archivo cargado en el DataGrid.",
+                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
+
+            Propiedades propiedades = new Propiedades
+            {
+                Ruta = rutaArchivoActual
+            };
+
+            Propiedades(propiedades);
         }
         private void CopiarArchivo()
         {
