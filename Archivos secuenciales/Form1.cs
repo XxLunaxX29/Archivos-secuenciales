@@ -517,7 +517,7 @@ namespace Archivos_secuenciales
                 }
             }
         }
-
+       
         private void btnCrearCarpeta_Click(object sender, EventArgs e)
         {
             try
